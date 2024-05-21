@@ -1,5 +1,5 @@
 defmodule ShopifySpider do
-  
+
   use Crawly.Spider
    @impl Crawly.Spider
    def base_url(), do: "https://www.goodeeworld.com/"
@@ -7,42 +7,66 @@ defmodule ShopifySpider do
    @impl Crawly.Spider
    def init() do
      IO.puts("Spider initialized")
-    [start_urls: ["https://www.goodeeworld.com/collections/gifts","https://www.goodeeworld.com/collections/household"],] #"https://www.goodeeworld.com/collections/household"
+    [start_urls: ["https://goodfair.com/products.json","https://www.adoredvintage.com/products.json","https://www.goodeeworld.com/products.json"],]
    end
-   
+
    @impl Crawly.Spider
    def parse_item(response) do
      IO.puts("Parsing item")
-     {:ok, document} = Floki.parse_document(response.body)
-     
+    #  IO.inspect(response.request_url)
+    #  {:ok, document} = Floki.parse_document(response.body)
 
-    
+    headers = [
+      %{
+        title: "title",
+        price: "price",
+        description: "description",
+        image: "image",
+        vendor: "vendor",
+        url: "url"
+      }
+    ]
 
-    items =
-      document
-      |> Floki.find(".product-block .block-inner .block-inner-inner")
-      |> Enum.map(fn x ->
-        %{
-          title: Floki.find(x, " .product-info .inner .product-block__title") |> Floki.text(),
-          vendor: Floki.find(x, ".product-info .inner .vendor") |> Floki.text(),
-          price: Floki.find(x, ".product-info .inner .product-price .product-price__item ") |> Floki.text(),
-          image: Floki.find(x, ".image-cont .image-label-wrap .product-block__image  img ") |> Floki.attribute("src") |> Floki.text(),
-          url: response.request_url
-        }
-      end)
+    json = Jason.decode!(response.body)
+    # IO.inspect(json)
 
-     
+
+
+    items = headers ++ Enum.map(json["products"], fn product ->
+      %{
+        title: product["title"],
+        price: product["variants"] |> Enum.map(fn x -> x["price"] end) |> Enum.at(0),
+        description: product["body_html"] |> Floki.text(),
+        image: product["images"] |> Enum.map(fn x -> x["src"] end) |> Enum.at(0),
+        vendor: product["vendor"],
+        url: response.request_url
+      }
+    end)
+
+    IO.inspect(items)
+
+    # Determine the next page URL
+    # next_page = json_body["next_page"]
+
+    # requests = if next_page do
+    #   [Crawly.Request.new(next_page)]
+    # else
+    #   []
+    # end
+
+
     #  next_requests =
     #    document
     #    |> Floki.find(".next a")
     #    |> Floki.attribute("href")
     #    |> Enum.map(fn url ->
-    #      Crawly.Utils.build_absolute_url(url, response.request.url)
-    #      |> Crawly.Utils.request_from_url()
+          # response.request.url
+        #  |> Crawly.Utils.request_from_url()
     #    end)
 
-     %Crawly.ParsedItem{items: items}
-      
+
+     %Crawly.ParsedItem{items: items} #,requests: next_requests
+
     end
-    
+
 end

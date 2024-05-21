@@ -50,7 +50,7 @@ defmodule Crawly.Pipelines.WriteToFile do
             folder: String.t(),
             extension: String.t(),
             include_timestamp: boolean(),
-            # headers: list(atom)          # where redefining run function with headers for csv file
+            headers: list(atom)          # where redefining run function with headers for csv file
           ]
         ) ::
           {item :: any,
@@ -66,12 +66,6 @@ defmodule Crawly.Pipelines.WriteToFile do
   def run(item, state, opts) do
     opts =
       Enum.into(opts, %{folder: nil, extension: nil, include_timestamp: true})
-    # IO.puts("--------------  opts / headers -----------------")
-    # headers = Enum.into(opts, %{headers: nil})
-    # IO.inspect(opts["headers"])
-
-    # IO.puts("--------------       -----------------")
-
 
     folder = Map.get(opts, :folder, "./")
 
@@ -96,7 +90,7 @@ defmodule Crawly.Pipelines.WriteToFile do
       end
 
     fd = open_fd(folder, filename)
-    :ok = write(fd, item )   #// includig headers parameter for write function 
+    :ok = write(fd, item)
     IO.puts("----------- Writing to file: #{folder}/#{filename} ---------------")
     {item, Map.put(state, :write_to_file_fd, fd)}
   end
@@ -118,11 +112,9 @@ defmodule Crawly.Pipelines.WriteToFile do
              item: any()
   defp write(io, item) do                  #// have to do some changes here for including headers in csv
     try do
-        #// Writes headers
     #   if headers do
-    #     IO.write(io, headers)                       #// checks for the headers and writes them to the file 
+    #     IO.write(io, headers)
     #     IO.write(io, "\n")
-    #     headers = false
     #   end
       IO.write(io, item)
       IO.write(io, "\n")

@@ -13,7 +13,6 @@ defmodule Crawly.Pipelines.CSVEncoder do
   @behaviour Crawly.Pipeline
   require Logger
 
-#editing current pipelines for accepting headers and writing to file
   @impl Crawly.Pipeline
   @spec run(map, map, fields: list(atom)) ::
           {false, state :: map} | {csv_line :: String.t(), state :: map}
@@ -21,9 +20,16 @@ defmodule Crawly.Pipelines.CSVEncoder do
 
   def run(item, state, opts \\ []) do
     opts = Enum.into(opts, %{fields: nil})
-#     IO.puts("--------------  opts -----------------")
-#     IO.inspect(opts)
-    # IO.puts("--------------       -----------------")
+
+    IO.puts("--------------CSVEncoder.run-------------")
+    IO.inspect(item)
+     a = 0
+     a= a+1
+     IO.puts(a)
+    # IO.inspect(state)
+    # IO.inspect(opts)
+    IO.puts("--------------              -------------")
+
 
     case opts[:fields] do
       fields when fields in [nil, []] ->

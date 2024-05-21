@@ -23,7 +23,9 @@ defmodule Shopifyscrap.MixProject do
   defp deps do
     [
       {:crawly, "~> 0.17.0"},
-      {:floki, "~> 0.33.0"}
+      {:floki, "~> 0.33.0"},
+      {:jason, "~> 1.4"}
+
     ]
   end
 end
