@@ -17,25 +17,12 @@ defmodule Crawly.Pipelines.CSVEncoder do
   @spec run(map, map, fields: list(atom)) ::
           {false, state :: map} | {csv_line :: String.t(), state :: map}
 
-
   def run(item, state, opts \\ []) do
     opts = Enum.into(opts, %{fields: nil})
 
-    IO.puts("--------------CSVEncoder.run-------------")
-    IO.inspect(item)
-     a = 0
-     a= a+1
-     IO.puts(a)
-    # IO.inspect(state)
-    # IO.inspect(opts)
-    IO.puts("--------------              -------------")
-
-
     case opts[:fields] do
       fields when fields in [nil, []] ->
-        Logger.error(
-          "Dropping item: #{inspect(item)}. Reason: No fields declared for CSVEncoder"
-        )
+        Logger.error("Dropping item: #{inspect(item)}. Reason: No fields declared for CSVEncoder")
 
         {false, state}
 

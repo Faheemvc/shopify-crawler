@@ -15,17 +15,17 @@ defmodule Shopifyscrap.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {Shopifyscrap.Application, []},
+      mod: {Shopifyscrap.Application, []}
     ]
   end
 
-  # Run "mix help deps" to learn about dependencies.
+  # Run "mix help deps" to learn about dependencies .
   defp deps do
     [
       {:crawly, "~> 0.17.0"},
       {:floki, "~> 0.33.0"},
-      {:jason, "~> 1.4"}
-
+      {:jason, "~> 1.4"},
+      {:httpoison, "~> 2.2"}
     ]
   end
 end
