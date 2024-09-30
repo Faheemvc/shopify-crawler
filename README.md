@@ -1,20 +1,9 @@
-<<<<<<< HEAD
 # ShopifyScrapper
 
-Web scrapper to crawl through shopify websites 
-=======
-<<<<<<< HEAD
-# ShopifyScraper-functionary
-this project will scrap the websites in shopify
-=======
-# Shopifyscrap
-
-**TODO: Add description**
+This Web scrapper crawl through shopify inspiration websites and gives the products data as csv file 
 
 ## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `shopifyscrap` to your list of dependencies in `mix.exs`:
+install required elixir
 
 ```elixir
 def deps do
@@ -23,10 +12,15 @@ def deps do
   ]
 end
 ```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/shopifyscrap>.
-
->>>>>>> f00bda4 (inital commit)
->>>>>>> 8787d63 (initial commit)
+## Run following
+```
+mix deps.get
+```
+- Start server
+```
+mix phx.server
+```
+- Start server with iex
+```
+iex -S mix phx.server
+```
