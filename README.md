@@ -13,6 +13,7 @@ def deps do
 end
 ```
 ## Run following
+- Install dependancies 
 ```
 mix deps.get
 ```
